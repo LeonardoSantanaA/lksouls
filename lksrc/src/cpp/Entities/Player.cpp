@@ -89,17 +89,6 @@ void Player::Update() {
 	HorizontalMovement();
 	AnimationState();
 
-	//std::cout << "isRolling: " << isRolling << std::endl;
-	//std::cout << "canRoll: " << canRoll << std::endl;
-	/*std::cout << "------------------" << std::endl;
-	std::cout << "isAttacking: " << isAttacking << std::endl;
-	std::cout << "canJump: " << canJump << std::endl;
-	std::cout << "takingDamage: " << takingDamage << std::endl;
-	std::cout << "canChangeDirection: " << canChangeDirection << std::endl;
-	std::cout << "isMoving: " << isMoving << std::endl;
-	std::cout << "canPrepareToDefend: " << canPrepareToDefend << std::endl;
-	std::cout << "isJumping: " << isJumping << std::endl;
-	std::cout << "------------------" << std::endl;*/
 }
 
 void Player::InputHandle() {

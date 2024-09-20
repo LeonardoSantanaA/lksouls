@@ -181,24 +181,14 @@ void Engine::RunLoop() {
 
 		if (mCurrentStatePoped) {
 			mCurrentStatePoped;
-		}
-
-
-		if (Input::GetInstance()->GetKeyPress(SDL_SCANCODE_LEFT)) {
-			ChangeState("menu");
-		}
-
-		if (Input::GetInstance()->GetKeyPress(SDL_SCANCODE_RIGHT)) {
-			ChangeState("play");
-		}
-	
+		}	
 
 		SDL_Event event{};
 
 		SDL_SetRenderDrawColor(mRender, 0, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(mRender);
-		//show what draw
 
+		//show what draw
 		if (mCurrentState) {
 			mCurrentState->Render();
 		}
@@ -209,7 +199,6 @@ void Engine::RunLoop() {
 
 		SDL_RenderPresent(mRender);
 	
-
 
 		elapsedTime = SDL_GetTicks64() - start;
 
