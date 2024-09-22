@@ -21,7 +21,49 @@
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ]
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "SDL2MAIN_LIBRARY",
+          "value": "C:/SDL2/lib/x64/SDL2main.lib",
+          "type": "FILEPATH"
+        },
+        {
+          "name": "SDL2_INCLUDE_DIR",
+          "value": "C:/SDL2/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_LIBRARY",
+          "value": "C:/SDL2/lib/x64/SDL2.lib",
+          "type": "FILEPATH"
+        },
+        {
+          "name": "SDL2_IMAGE_PATH",
+          "value": "C:/SDL2/",
+          "type": "STRING"
+        },
+        {
+          "name": "SDL2_TTF_INCLUDE_DIR",
+          "value": "C:/SDL2/include/",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_TTF_LIBRARY",
+          "value": "C:/SDL2/lib/x64/SDL2_ttf.lib",
+          "type": "FILEPATH"
+        },
+        {
+          "name": "SDL2_MIXER_INCLUDE_DIR",
+          "value": "C:/SDL2/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_MIXER_LIBRARY",
+          "value": "C:/SDL2/lib/x64/SDL2_mixer.lib",
+          "type": "FILEPATH"
+        }
+      ]
     }
   ]
 }

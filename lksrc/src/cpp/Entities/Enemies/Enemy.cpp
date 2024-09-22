@@ -145,6 +145,31 @@ void Enemy::Jump() {
 }
 
 void Enemy::Attack() {
+	std::shared_ptr<GameEntity> player = EntityManager::GetInstance()->GetEntityRef<GameEntity>("PLAYER");
+
+	//left
+	if (!isTakingDamage) {
+		if (player->GetVec2D(0).x > GetVec2D(0).x) {
+			if (mVelocity < mMaxVelocity) {
+				mDirection = 1;
+			}
+			else {
+				mVelocity = mMaxVelocity;
+			}
+		}
+
+		//right
+		if (player->GetVec2D(0).x < GetVec2D(0).x) {
+			if (mVelocity > -mMaxVelocity) {
+				mDirection = -1;
+			}
+			else {
+				mVelocity = -mMaxVelocity;
+			}
+		}
+	}
+
+
 	if (mCanAttack && !isTakingDamage) {
 		currentAnimationAttack++;
 		if (currentAnimationAttack >= maxAnimationAttack) {

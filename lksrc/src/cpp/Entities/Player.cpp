@@ -35,7 +35,7 @@ const float ATTACK_COST = 10.0f;
 
 
 Player::Player(const std::string& name) : GameEntity::GameEntity(name),
-mDirection(1), mVelocity(0), isMoving(false), vSpd(0), grvt(.8f), canJump(false), isJumping(false),  delayJump(0), maxMoveDelay(5.0f), moveDelay(0), mMaxVelocity(3),
+mDirection(1), mVelocity(0), isMoving(false), vSpd(0), grvt(.8f), canJump(false), isJumping(false), delayJump(0), maxMoveDelay(5.0f), moveDelay(0), mMaxVelocity(3),
 mStepVelocity(0.2f), inChangeDirection(false), isAttacking(false), currentIndexAttack(0), currentDelayAttack(0), maxDelayAttack(30.0f),
 nameCurrentAnimationAttack("attack_0"), currentDelayComboAttack(0), maxDelayComboAttack(50.0f), mHit(this), canHit(true), mCurrentState(PLAYER_IDLE), canChangeDirection(false), mDelayCanChangeDirection(0), isRolling(false), canRoll(true), mDelayCanRoll(0), preparingToDefend(false), isDefending(false), canPrepareToDefend(false), takingDamage(false), mDelayTakingDamage(0), mLife(100.0f), mMaxLife(100.0f), mStepLife(0.08f), mStamina(80.0f), mMaxStamina(80.0f), mStepStamina(0.2f), isDead(false)
 {
@@ -95,50 +95,50 @@ void Player::InputHandle() {
 	auto input = Input::GetInstance();
 
 	if (!isDead) {
-	if (Input::GetInstance()->GetKeyPress(SDL_SCANCODE_ESCAPE)) {
-		Engine::GetInstance()->PopState("pause");
-	}
+		if (Input::GetInstance()->GetKeyPress(SDL_SCANCODE_ESCAPE)) {
+			Engine::GetInstance()->PopState("pause");
+		}
 
-	if (input->GetKeyDown(SDL_SCANCODE_A)) {
-		Move(-1);
-	}
-	else if (input->GetKeyDown(SDL_SCANCODE_D)) {
-		Move(1);
-	}
+		if (input->GetKeyDown(SDL_SCANCODE_A)) {
+			Move(-1);
+		}
+		else if (input->GetKeyDown(SDL_SCANCODE_D)) {
+			Move(1);
+		}
 
-	if (input->GetKeyDown(SDL_SCANCODE_SPACE)) {
-		Jump();
-	}
+		if (input->GetKeyDown(SDL_SCANCODE_SPACE)) {
+			Jump();
+		}
 
-	if (input->GetKeyPress(SDL_SCANCODE_LCTRL)) {
-		Roll();
-	}
+		if (input->GetKeyPress(SDL_SCANCODE_LCTRL)) {
+			Roll();
+		}
 
-	if (!input->GetKeyDown(SDL_SCANCODE_A) && !input->GetKeyDown(SDL_SCANCODE_D) && CanAct()) {
-		isMoving = false;
-		inChangeDirection = false;
-		mCurrentState = PLAYER_IDLE;
-	}
+		if (!input->GetKeyDown(SDL_SCANCODE_A) && !input->GetKeyDown(SDL_SCANCODE_D) && CanAct()) {
+			isMoving = false;
+			inChangeDirection = false;
+			mCurrentState = PLAYER_IDLE;
+		}
 
-	if ((input->GetKeyDown(SDL_SCANCODE_A) && input->GetKeyDown(SDL_SCANCODE_D)) && CanAct()) {
-		mCurrentState = PLAYER_IDLE;
-		isMoving = false;
-		inChangeDirection = false;
-		ResetVelocity();
-	}
+		if ((input->GetKeyDown(SDL_SCANCODE_A) && input->GetKeyDown(SDL_SCANCODE_D)) && CanAct()) {
+			mCurrentState = PLAYER_IDLE;
+			isMoving = false;
+			inChangeDirection = false;
+			ResetVelocity();
+		}
 
-	if (input->GetMouseButtonPress(SDL_BUTTON_LEFT)) {
-		Attack();
-	}
+		if (input->GetMouseButtonPress(SDL_BUTTON_LEFT)) {
+			Attack();
+		}
 
-	if (input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) {
-		Defense();
-	}
-	else {
-		preparingToDefend = false;
-		isDefending = false;
-		canPrepareToDefend = true;
-	}
+		if (input->GetMouseButtonDown(SDL_BUTTON_RIGHT)) {
+			Defense();
+		}
+		else {
+			preparingToDefend = false;
+			isDefending = false;
+			canPrepareToDefend = true;
+		}
 	}
 }
 
@@ -424,7 +424,7 @@ void Player::AnimationState() {
 			ChangeAnimation("inDefense");
 			SetAnimationLoop(true);
 			SetAnimationSpeed(20.0f);
-			
+
 		}
 		break;
 
@@ -446,7 +446,7 @@ void Player::AnimationState() {
 				takingDamage = false;
 			}
 		}
-	
+
 		break;
 
 	default:
@@ -549,7 +549,7 @@ void Player::TakeDamage(float damage, float knockback) {
 	if (!isJumping && !isRolling) {
 		if (isDefending && mStamina >= DEFENSE_COST) { //player is defending, then only receives 20% of the damage and 50% of knockback
 			mStamina -= damage * 0.6f;
-			damage = damage * 0.2f; 
+			damage = damage * 0.2f;
 			knockback = knockback * 0.5f;
 			Camera::GetInstance()->Screenshake(1.0f, 3.0f);
 			Sound::GetInstance()->PlaySound(sndAttackDeffense);
@@ -563,6 +563,6 @@ void Player::TakeDamage(float damage, float knockback) {
 	}
 }
 
-bool Player::CanAct() const{
+bool Player::CanAct() const {
 	return !isAttacking && !isJumping && !isRolling && !isDefending && !takingDamage;
 }
