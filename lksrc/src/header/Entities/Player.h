@@ -52,6 +52,7 @@ private:
 	int mDirection;
 	bool inChangeDirection;
 	bool canChangeDirection;
+	int mDirectionToChange;
 	int mDelayCanChangeDirection;
 
 	float mVelocity;

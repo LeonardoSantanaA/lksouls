@@ -37,7 +37,7 @@ const float ATTACK_COST = 10.0f;
 Player::Player(const std::string& name) : GameEntity::GameEntity(name),
 mDirection(1), mVelocity(0), isMoving(false), vSpd(0), grvt(.8f), canJump(false), isJumping(false), delayJump(0), maxMoveDelay(5.0f), moveDelay(0), mMaxVelocity(3),
 mStepVelocity(0.2f), inChangeDirection(false), isAttacking(false), currentIndexAttack(0), currentDelayAttack(0), maxDelayAttack(30.0f),
-nameCurrentAnimationAttack("attack_0"), currentDelayComboAttack(0), maxDelayComboAttack(50.0f), mHit(this), canHit(true), mCurrentState(PLAYER_IDLE), canChangeDirection(false), mDelayCanChangeDirection(0), isRolling(false), canRoll(true), mDelayCanRoll(0), preparingToDefend(false), isDefending(false), canPrepareToDefend(false), takingDamage(false), mDelayTakingDamage(0), mLife(100.0f), mMaxLife(100.0f), mStepLife(0.08f), mStamina(80.0f), mMaxStamina(80.0f), mStepStamina(0.2f), isDead(false)
+nameCurrentAnimationAttack("attack_0"), currentDelayComboAttack(0), maxDelayComboAttack(50.0f), mHit(this), canHit(true), mCurrentState(PLAYER_IDLE), canChangeDirection(false), mDelayCanChangeDirection(0), isRolling(false), canRoll(true), mDelayCanRoll(0), preparingToDefend(false), isDefending(false), canPrepareToDefend(false), takingDamage(false), mDelayTakingDamage(0), mLife(100.0f), mMaxLife(100.0f), mStepLife(0.08f), mStamina(80.0f), mMaxStamina(80.0f), mStepStamina(0.2f), isDead(false), mDirectionToChange(1)
 {
 	float scale = 1.5f;
 	AddAnimatedSprite("assets/images/player/player.png", FORMAT_PNG);
@@ -197,12 +197,13 @@ void Player::ChangeDirection(int dir) {
 		mCurrentState = PLAYER_CHANGE_POSITION;
 		canJump = false;
 		ResetVelocity();
-		if (IsLastFrame() && canChangeDirection && mCurrentState == PLAYER_CHANGE_POSITION) {
+		mDirectionToChange = dir;
+	/*	if (canChangeDirection && mCurrentState == PLAYER_CHANGE_POSITION && IsLastFrame()) {
 			FlipHorizontal();
 			inChangeDirection = false;
 			canJump = true;
 			mDirection = dir;
-		}
+		}*/
 	}
 }
 
@@ -378,6 +379,12 @@ void Player::AnimationState() {
 		canJump = false;
 		SetAnimationSpeed(6.0f);
 		SetAnimationLoop(false);
+		if (canChangeDirection && mCurrentState == PLAYER_CHANGE_POSITION && IsLastFrame()) {
+			FlipHorizontal();
+			inChangeDirection = false;
+			canJump = true;
+			mDirection = mDirectionToChange;
+		}
 		break;
 
 	case PLAYER_ATTACKING:
