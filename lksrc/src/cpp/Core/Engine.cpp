@@ -20,7 +20,8 @@
 
 Engine* Engine::mInstance = nullptr;
 
-Engine::Engine(): mMouseX(0), mMouseY(0), mWidth(800), mHeight(600), mMaxFrameRate(60), mCurrentState(nullptr), mCurrentStatePoped(nullptr){
+Engine::Engine(): mMouseX(0), mMouseY(0), mWidth(1280), mHeight(720), mMaxFrameRate(60), mCurrentState(nullptr), mCurrentStatePoped(nullptr), 
+mResolutionWidth(1280), mResolutionHeight(720){
 
 }
 
@@ -160,17 +161,33 @@ void Engine::ChangeState(const std::string& idTarget) {
 }
 
 void Engine::RunLoop() {
-	uint64_t lastTime = 0, elapsedTime;
+	const uint64_t frameDelay = 1000 / mMaxFrameRate;
+	uint64_t lastTime = SDL_GetTicks64();
+	uint64_t currentTime, elapsedTime;
 
 	while (mGameIsRunning) {
-		uint64_t start = SDL_GetTicks64();
+		currentTime = SDL_GetTicks64();
+		elapsedTime = currentTime - lastTime;
+		lastTime = currentTime;
 
 		uint32_t buttons;
-		buttons = SDL_GetMouseState(&mMouseX, &mMouseY);
+
+		int mouseWindowX, mouseWindowY;
+		buttons = SDL_GetMouseState(&mouseWindowX, &mouseWindowY);
+
+		int windowWidth, windowHeight;
+		SDL_GetWindowSize(Engine::GetInstance()->GetWindow(), &windowWidth, &windowHeight);
+
+		const int logicalWidth = mResolutionWidth;
+		const int logicalHeight = mResolutionHeight;
+
+		float scaleX = static_cast<float>(windowWidth) / logicalWidth;
+		float scaleY = static_cast<float>(windowHeight) / logicalHeight;
+
+		mMouseX = static_cast<int>(mouseWindowX / scaleX);
+		mMouseY = static_cast<int>(mouseWindowY / scaleY);
 
 		Input::GetInstance()->Listen();
-		//mLevelMap->Update();
-		//mUpdateCallback();
 		if (mCurrentState && !mCurrentState->isPop) {
 			mCurrentState->Update();
 		}
@@ -178,37 +195,24 @@ void Engine::RunLoop() {
 			mCurrentStatePoped->Update();
 		}
 
-
-		if (mCurrentStatePoped) {
-			mCurrentStatePoped;
-		}	
-
-		SDL_Event event{};
-
 		SDL_SetRenderDrawColor(mRender, 0, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(mRender);
-
-		//show what draw
 		if (mCurrentState) {
 			mCurrentState->Render();
 		}
 		if (mCurrentStatePoped) {
 			mCurrentStatePoped->Render();
 		}
-	
-
 		SDL_RenderPresent(mRender);
-	
 
-		elapsedTime = SDL_GetTicks64() - start;
+		uint64_t frameTime = SDL_GetTicks64() - currentTime;
 
-		uint64_t waitTime = (1 / (uint64_t)mMaxFrameRate) * 1000;
-
-		if (elapsedTime < waitTime) {
-			SDL_Delay(static_cast<Uint32>(waitTime - elapsedTime));
+		if (frameTime < frameDelay) {
+			SDL_Delay(static_cast<Uint32>(frameDelay - frameTime));
 		}
 	}
 }
+
 
 SDL_Renderer* Engine::GetRender() const {
 	return mRender;

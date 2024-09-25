@@ -74,6 +74,8 @@ public:
 }
 	//inline std::shared_ptr<GameMap> GetLevelMap() { return mLevelMap; }
 
+	inline int GetResolutionWidth() const { return mResolutionWidth; }
+	inline int GetResolutionHeight() const { return mResolutionHeight; }
 
 	SDL_TimerID AddTimer(uint32_t delay, SDL_TimerCallback callback, void* param);
 	SDL_TimerID AddRecurringTimer(uint32_t interval, SDL_TimerCallback callback, void* param);
@@ -93,6 +95,8 @@ private:
 	int mMouseX, mMouseY;
 	int mWidth, mHeight;
 	int mMaxFrameRate;
+	int mResolutionWidth;
+	int mResolutionHeight;
 
 	std::set<SDL_TimerID> mTimers;
 	std::vector<GameState*> mStates;
